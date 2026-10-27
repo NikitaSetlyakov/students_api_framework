@@ -3,29 +3,17 @@ from typing import Optional
 import allure
 import pytest
 
-from faker import Faker
 from src.clients.students_client import StudentClient
 from src.utils.builders.student_builder import StudentBuilder
 from src.utils.assert_wrappers import assert_is_instance, assert_contains, assert_status_code, assert_eq
 
 @pytest.mark.positive
 @allure.title('Создание студента с валидными данными')
-def test_create_valid_student(student_client: StudentClient, fake: Faker) -> None:
-    fake_email = fake.email()
-    gender = 'male'
-    fake_name = f'{fake.first_name()} {fake.last_name()}'
-    fake_phone = fake.numerify(text="+7999#######")
-    status = 1
-    
-    response = student_client.create_new_student(
-        body=StudentBuilder.create_student(
-            email=fake_email,
-            gender=gender,
-            name=fake_name,
-            phone_no=fake_phone,
-            status=status
-        )
-    )
+def test_create_valid_student(
+    student_client: StudentClient, 
+    student_data: dict,
+) -> None:
+    response = student_client.create_new_student(body=student_data)
 
     assert_status_code(
         actual_value=response.status_code, 
@@ -63,7 +51,7 @@ def test_create_valid_student(student_client: StudentClient, fake: Faker) -> Non
 
     assert_eq(
         actual_value=student['email'],
-        expected_value=fake_email,
+        expected_value=student_data['email'],
         allure_step='Проверка email созданного студента',
     )
 
@@ -71,7 +59,7 @@ def test_create_valid_student(student_client: StudentClient, fake: Faker) -> Non
 
     assert_eq(
         actual_value=student['gender'],
-        expected_value=gender,
+        expected_value=student_data['gender'],
         allure_step='Проверка пола созданного студента',
     )
 
@@ -79,7 +67,7 @@ def test_create_valid_student(student_client: StudentClient, fake: Faker) -> Non
 
     assert_eq(
         actual_value=student['name'],
-        expected_value=fake_name,
+        expected_value=student_data['name'],
         allure_step='Проверка имени созданного студента',
     )
 
@@ -87,7 +75,7 @@ def test_create_valid_student(student_client: StudentClient, fake: Faker) -> Non
 
     assert_eq(
         actual_value=student['phone_no'],
-        expected_value=fake_phone,
+        expected_value=student_data['phone_no'],
         allure_step='Проверка телефона созданного студента',
     )
 
@@ -95,7 +83,7 @@ def test_create_valid_student(student_client: StudentClient, fake: Faker) -> Non
 
     assert_eq(
         actual_value=student['status'],
-        expected_value=status,
+        expected_value=student_data['status'],
         allure_step='Проверка статуса созданного студента',
     )
 
@@ -166,16 +154,10 @@ def test_create_student_with_invalid_data(
 @allure.title('Создание студента без обязательного поля')
 def test_create_student_without_required_field(
     student_client: StudentClient,
-    fake: Faker,
+    student_data: dict,
     missing_field: str,
 ) -> None:
-    body = StudentBuilder.create_student(
-        email=fake.email(),
-        gender='male',
-        name=f'{fake.first_name()} {fake.last_name()}',
-        phone_no=fake.numerify(text='+7999#######'),
-        status=1,
-    )
+    body = student_data.copy()
 
     del body[missing_field]
 
