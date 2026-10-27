@@ -2,7 +2,12 @@ import allure
 import pytest
 
 from src.clients.students_client import StudentClient
-from src.utils.assert_wrappers import assert_is_instance, assert_contains, assert_status_code, assert_eq
+from src.utils.assert_wrappers import (
+    assert_is_instance, 
+    assert_contains, 
+    assert_status_code, 
+    assert_eq,
+)
 
 @allure.title('Проверка получения студента по ID')
 def test_get_student_by_id(

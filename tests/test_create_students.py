@@ -5,7 +5,12 @@ import pytest
 
 from src.clients.students_client import StudentClient
 from src.utils.builders.student_builder import StudentBuilder
-from src.utils.assert_wrappers import assert_is_instance, assert_contains, assert_status_code, assert_eq
+from src.utils.assert_wrappers import (
+    assert_is_instance, 
+    assert_contains, 
+    assert_status_code, 
+    assert_eq,
+)
 
 @pytest.mark.positive
 @allure.title('Создание студента с валидными данными')
