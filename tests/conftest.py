@@ -1,3 +1,5 @@
+from typing import Generator
+
 import pytest
 from faker import Faker
 
@@ -29,7 +31,10 @@ def student_data(fake: Faker) -> dict:
     )
 
 @pytest.fixture
-def created_student(student_client: StudentClient, student_data: dict):
+def created_student(
+    student_client: StudentClient, 
+    student_data: dict,
+    ) -> Generator[int, None, None]:
 
     create_student = student_client.create_new_student(body=student_data)
 
