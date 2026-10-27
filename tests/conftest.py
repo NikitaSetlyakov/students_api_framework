@@ -3,7 +3,7 @@ import pytest
 from config import TestConfig
 from src.clients.students_client import StudentClient
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def config() -> 'TestConfig':
     return TestConfig()
 
