@@ -2,6 +2,18 @@ from typing import Any, Optional
 
 import allure
 
+def assert_eq(
+    actual_value: Any,
+    expected_value: Any,
+    allure_step: str = 'Сравнение ожидаемого результата с фактическим',
+    error_msg: Optional[str] = None,
+) -> None:
+    with allure.step(allure_step):
+        assert actual_value == expected_value, error_msg or (
+            f"Значения не равны: "
+            f"ожидалось {expected_value}, "
+            f"получено {actual_value}"
+        )
 
 def assert_is_instance(
     actual_value: Any,
@@ -13,7 +25,7 @@ def assert_is_instance(
         assert isinstance(actual_value, expected_type), error_msg or (
             f"Неверный тип: ожидался {expected_type}, "
             f"получен {type(actual_value)}. "
-            f"Значение: {actual_value!r}"
+            f"Значение: {actual_value}"
         )
 
 def assert_contains(

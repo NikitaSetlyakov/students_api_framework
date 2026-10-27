@@ -4,9 +4,11 @@ import pytest
 from faker import Faker
 from src.clients.students_client import StudentClient
 from src.utils.builders.student_builder import StudentBuilder
-from src.utils.assert_wrappers import assert_is_instance, assert_contains
+from src.utils.assert_wrappers import assert_is_instance, assert_contains, assert_status_code, assert_eq
 
-def test_create_valid_user(student_client: StudentClient, fake: Faker) -> None:
+@pytest.mark.positive
+@allure.title('Создание студента с валидными данными')
+def test_create_valid_student(student_client: StudentClient, fake: Faker) -> None:
     fake_email = fake.email()
     gender = 'male'
     fake_name = f'{fake.first_name()} {fake.last_name()}'
@@ -23,17 +25,75 @@ def test_create_valid_user(student_client: StudentClient, fake: Faker) -> None:
         )
     )
 
-    assert response.status_code == 200
+    assert_status_code(
+        actual_value=response.status_code, 
+        expected_value=200, 
+        allure_step='Проверка успешного статус-кода',
+    )
 
     data = response.json()
-    assert isinstance(data, dict)
-    assert data.get('message') == "Student created successfully"
 
-    student = data.get('student')
-    assert isinstance(student, dict)
+    assert_is_instance(
+        actual_value=data,
+        expected_type=dict,
+        allure_step='Проверка типа тела ответа',
+    )
 
-    assert student['email'] == fake_email
-    assert student['gender'] == gender
-    assert student['name'] == fake_name
-    assert student['phone_no'] == fake_phone
-    assert student['status'] == status
+    assert_contains(data, 'message')
+
+    assert_eq(
+        actual_value=data['message'],
+        expected_value='Student created successfully',
+        allure_step='Проверка сообщения об успешном создании студента',
+    )
+
+    assert_contains(data, 'student')
+
+    student = data['student']
+
+    assert_is_instance(
+        actual_value=student,
+        expected_type=dict,
+        allure_step='Проверка типа объекта student',
+    )
+
+    assert_contains(student, 'email')
+
+    assert_eq(
+        actual_value=student['email'],
+        expected_value=fake_email,
+        allure_step='Проверка email созданного студента',
+    )
+
+    assert_contains(student, 'gender')
+
+    assert_eq(
+        actual_value=student['gender'],
+        expected_value=gender,
+        allure_step='Проверка пола созданного студента',
+    )
+
+    assert_contains(student, 'name')
+
+    assert_eq(
+        actual_value=student['name'],
+        expected_value=fake_name,
+        allure_step='Проверка имени созданного студента',
+    )
+
+    assert_contains(student, 'phone_no')
+
+    assert_eq(
+        actual_value=student['phone_no'],
+        expected_value=fake_phone,
+        allure_step='Проверка телефона созданного студента',
+    )
+
+    assert_contains(student, 'status')
+
+    assert_eq(
+        actual_value=student['status'],
+        expected_value=status,
+        allure_step='Проверка статуса созданного студента',
+    )
+
