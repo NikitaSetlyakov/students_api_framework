@@ -16,7 +16,6 @@ def assert_is_instance(
             f"Значение: {actual_value!r}"
         )
 
-
 def assert_contains(
     actual_value: Any,
     expected_item: Any,
@@ -26,4 +25,16 @@ def assert_contains(
     with allure.step(allure_step):
         assert expected_item in actual_value, error_msg or (
             f"Элемент {expected_item} отсутствует в {actual_value}"
+        )
+
+def assert_status_code(
+    actual_value: int,
+    expected_value: int,
+    allure_step: str = 'Проверка статуса ответа',
+    error_msg: Optional[str] = None,
+) -> None:
+    with allure.step(allure_step):
+        assert actual_value == expected_value, error_msg or (
+            f"Неверный статус-код: ожидался {expected_value}, "
+            f"получен {actual_value}"
         )

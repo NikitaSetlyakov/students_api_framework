@@ -4,6 +4,7 @@ import pytest
 from faker import Faker
 from src.clients.students_client import StudentClient
 from src.utils.builders.student_builder import StudentBuilder
+from src.utils.assert_wrappers import assert_is_instance, assert_contains
 
 def test_create_valid_user(student_client: StudentClient, fake: Faker) -> None:
     fake_email = fake.email()
@@ -30,7 +31,7 @@ def test_create_valid_user(student_client: StudentClient, fake: Faker) -> None:
 
     student = data.get('student')
     assert isinstance(student, dict)
-    
+
     assert student['email'] == fake_email
     assert student['gender'] == gender
     assert student['name'] == fake_name
