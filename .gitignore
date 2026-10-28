@@ -20,3 +20,5 @@ allure-report/
 .coverage
 htmlcov/
 auth_state.json
+__pycache__/
+*.pyc
