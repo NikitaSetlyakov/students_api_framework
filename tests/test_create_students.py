@@ -173,3 +173,4 @@ def test_create_student_without_required_field(
         expected_value=400,
         allure_step='Проверка ошибочного статус-кода',
     )
+

@@ -34,9 +34,11 @@ def student_data(fake: Faker) -> dict:
 def created_student(
     student_client: StudentClient, 
     student_data: dict,
-    ) -> Generator[int, None, None]:
+) -> Generator[int, None, None]:
 
-    create_student = student_client.create_new_student(body=student_data)
+    create_student = student_client.create_new_student(
+        body=student_data
+    )
 
     assert_status_code(
         actual_value=create_student.status_code,
@@ -48,12 +50,34 @@ def created_student(
 
     yield student_id
 
-    delete_student = student_client.delete_student(student_id=student_id)
+    delete_student = student_client.delete_student(
+        student_id=student_id
+    )
+
     assert_status_code(
         actual_value=delete_student.status_code,
         expected_value=200,
         allure_step='Проверка успешного статус-кода'
     )
+
+# @pytest.fixture
+# def created_student_for_delete(
+#     student_client: StudentClient, 
+#     student_data: dict,
+# ) -> None:
+    
+#     create_student = student_client.create_new_student(
+#         body=student_data
+#     )
+
+#     assert_status_code(
+#         actual_value=create_student.status_code,
+#         expected_value=200,
+#         allure_step='Проверка успешного статус-кода'
+#     )
+
+#     return create_student.json()['student']['id']
+    
 
 
     
