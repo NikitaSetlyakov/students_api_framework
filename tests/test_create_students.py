@@ -12,8 +12,8 @@ from src.utils.assert_wrappers import (
     assert_eq,
 )
 
-@pytest.mark.positive
 @allure.title('Создание студента с валидными данными')
+@pytest.mark.positive
 def test_create_valid_student(
     student_client: StudentClient, 
     student_data: dict,
@@ -92,6 +92,7 @@ def test_create_valid_student(
         allure_step='Проверка статуса созданного студента',
     )
 
+@allure.title('Создание студента с некорректными gender или status')
 @pytest.mark.parametrize(
     'email, gender, name, phone_no, status',
     [
@@ -117,7 +118,6 @@ def test_create_valid_student(
 @pytest.mark.xfail(
     reason='Баг #1: POST /student возвращает HTTP 200 при gender="" и status=null'
 )
-@allure.title('Создание студента с некорректными gender или status')
 def test_create_student_with_invalid_data(
     student_client: StudentClient,
     email: str,
@@ -142,6 +142,7 @@ def test_create_student_with_invalid_data(
         allure_step='Проверка ошибочного статус-кода',
     )
 
+@allure.title('Создание студента без обязательного поля')
 @pytest.mark.parametrize(
     'missing_field',
     [
@@ -156,7 +157,6 @@ def test_create_student_with_invalid_data(
 @pytest.mark.xfail(
     reason='Баг #2: POST /student возвращает 200 вместо 400 без обязательного поля',
 )
-@allure.title('Создание студента без обязательного поля')
 def test_create_student_without_required_field(
     student_client: StudentClient,
     student_data: dict,

@@ -65,12 +65,12 @@ def test_delete_student(student_client: StudentClient, created_student: int) -> 
         allure_step="Проверка статуса отсутствующего студента",
     )
 
+@allure.title('Удаление несуществующего студента')
 @pytest.mark.negative
 @pytest.mark.xfail(
     reason='Баг №4: DELETE /student/{student_id} возвращает сообщение ' 
     'об успешном удалении для уже удалённого студента'
 )
-@allure.title('Удаление несуществующего студента')
 def test_delete_nonexistent_student(
     student_client: StudentClient,
     created_student: int,

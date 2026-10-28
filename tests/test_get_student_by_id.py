@@ -86,12 +86,12 @@ def test_get_student_by_id(
         allure_step='Проверка status полученного студента',
     )
 
+@allure.title('Получение студента по ID после удаления')
 @pytest.mark.negative
 @pytest.mark.xfail(
     reason='Баг #3: Получение удалённого студента' 
     ' по ID возвращает HTTP 200 OK.'
 )
-@allure.title('Получение студента по ID после удаления')
 def test_get_deleted_student_by_id(
     student_client: StudentClient,
     student_data: dict,

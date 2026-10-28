@@ -7,7 +7,6 @@ from src.utils.assert_wrappers import (
     assert_status_code,
 )
 
-
 @allure.title('Получение списка студентов')
 def test_get_students_list(student_client: StudentClient) -> None:
     response = student_client.get_students_list()
