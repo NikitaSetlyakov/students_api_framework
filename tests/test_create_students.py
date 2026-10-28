@@ -3,14 +3,15 @@ from typing import Optional
 import allure
 import pytest
 
-from src.clients.students_client import StudentClient
-from src.utils.builders.student_builder import StudentBuilder
 from src.utils.assert_wrappers import (
-    assert_is_instance, 
-    assert_contains, 
-    assert_status_code, 
+    assert_contains,
     assert_eq,
+    assert_is_instance,
+    assert_status_code,
 )
+from src.utils.builders.student_builder import StudentBuilder
+from src.utils.helpers.create_student_helper import assert_student_fields
+from src.clients.students_client import StudentClient
 
 @allure.title('Создание студента с валидными данными')
 @pytest.mark.positive
@@ -46,50 +47,9 @@ def test_create_valid_student(
 
     student = data['student']
 
-    assert_is_instance(
-        actual_value=student,
-        expected_type=dict,
-        allure_step='Проверка типа объекта student',
-    )
-
-    assert_contains(student, 'email')
-
-    assert_eq(
-        actual_value=student['email'],
-        expected_value=student_data['email'],
-        allure_step='Проверка email созданного студента',
-    )
-
-    assert_contains(student, 'gender')
-
-    assert_eq(
-        actual_value=student['gender'],
-        expected_value=student_data['gender'],
-        allure_step='Проверка пола созданного студента',
-    )
-
-    assert_contains(student, 'name')
-
-    assert_eq(
-        actual_value=student['name'],
-        expected_value=student_data['name'],
-        allure_step='Проверка имени созданного студента',
-    )
-
-    assert_contains(student, 'phone_no')
-
-    assert_eq(
-        actual_value=student['phone_no'],
-        expected_value=student_data['phone_no'],
-        allure_step='Проверка телефона созданного студента',
-    )
-
-    assert_contains(student, 'status')
-
-    assert_eq(
-        actual_value=student['status'],
-        expected_value=student_data['status'],
-        allure_step='Проверка статуса созданного студента',
+    assert_student_fields(
+        student=student,
+        expected_data=student_data,
     )
 
 @allure.title('Создание студента с некорректными gender или status')
