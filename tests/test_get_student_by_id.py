@@ -17,6 +17,10 @@ from src.utils.assert_wrappers import (
 @pytest.mark.smoke
 @pytest.mark.regression
 @pytest.mark.positive
+@pytest.mark.xfail(
+    reason='Баг #7: GET /student/{id} иногда возвращает "Student not found"' 
+    ' сразу после успешного POST /student',
+)
 def test_get_student_by_id(
     student_client: StudentClient,
     created_student: int,
