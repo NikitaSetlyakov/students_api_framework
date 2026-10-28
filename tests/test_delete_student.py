@@ -2,14 +2,16 @@ import allure
 import pytest
 
 from src.clients.students_client import StudentClient
+from src.utils.helpers.delete_student_helper import assert_student_not_found
 from src.utils.assert_wrappers import (
-    assert_is_instance, 
-    assert_contains, 
-    assert_status_code, 
+    assert_is_instance,
+    assert_contains,
+    assert_status_code,
     assert_eq,
 )
 
 @allure.title('Удаление существующего студента')
+@pytest.mark.positive
 def test_delete_student(student_client: StudentClient, created_student: int) -> None:
     delete_response = student_client.delete_student(
         student_id=created_student,
@@ -25,7 +27,7 @@ def test_delete_student(student_client: StudentClient, created_student: int) -> 
 
     assert_eq(
         actual_value=data['message'],
-        expected_value="Student deleted successfully",
+        expected_value='Student deleted successfully',
         allure_step='Проверка успешного удаления студента'
     )
 
@@ -48,22 +50,12 @@ def test_delete_student(student_client: StudentClient, created_student: int) -> 
     assert_status_code(
         actual_value=get_response.status_code,
         expected_value=200,
-        allure_step="Проверка статус-кода после удаления",
+        allure_step='Проверка статус-кода после удаления',
     )
 
     get_data = get_response.json()
 
-    assert_eq(
-        actual_value=get_data["message"],
-        expected_value="Student not found",
-        allure_step="Проверка сообщения об отсутствии студента",
-    )
-
-    assert_eq(
-        actual_value=get_data["status"],
-        expected_value=0,
-        allure_step="Проверка статуса отсутствующего студента",
-    )
+    assert_student_not_found(get_data)
 
 @allure.title('Удаление несуществующего студента')
 @pytest.mark.negative
@@ -105,19 +97,4 @@ def test_delete_nonexistent_student(
 
     assert_is_instance(data, dict)
 
-    assert_contains(data, 'message')
-    assert_contains(data, 'status')
-
-    assert_eq(
-        actual_value=data['message'],
-        expected_value='Student not found',
-        allure_step='Проверка сообщения об отсутствии студента',
-    )
-
-    assert_eq(
-        actual_value=data['status'],
-        expected_value=0,
-        allure_step='Проверка статуса удаления несуществующего студента',
-    )
-
-    
+    assert_student_not_found(data)
