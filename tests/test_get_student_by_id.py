@@ -13,6 +13,11 @@ from src.utils.assert_wrappers import (
     assert_eq,
 )
 
+pytestmark = [
+    allure.feature("Получение данных студента по ID"),
+    allure.suite("Тесты на получение данных студента по ID"),
+]
+
 @allure.title('Проверка получения студента по ID')
 @pytest.mark.smoke
 @pytest.mark.regression

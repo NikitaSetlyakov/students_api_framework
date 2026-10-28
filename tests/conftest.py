@@ -13,7 +13,9 @@ def config() -> 'TestConfig':
     return TestConfig()
 
 @pytest.fixture
-def student_client(config: TestConfig) -> StudentClient:
+def student_client(
+    config: TestConfig,
+) -> StudentClient:
     return StudentClient(config=config)
 
 @pytest.fixture
@@ -21,7 +23,9 @@ def fake() -> 'Faker':
     return Faker()
 
 @pytest.fixture
-def student_data(fake: Faker) -> dict:
+def student_data(
+    fake: Faker,
+) -> dict:
     return StudentBuilder.create_student(
         email=fake.email(),
         gender='male',
@@ -31,7 +35,9 @@ def student_data(fake: Faker) -> dict:
     )
 
 @pytest.fixture
-def updated_student_data(fake: Faker) -> dict:
+def updated_student_data(
+    fake: Faker,
+) -> dict:
     return StudentBuilder.update_student(
         email=fake.email(),
         gender='female',
@@ -68,8 +74,3 @@ def created_student(
         expected_value=200,
         allure_step='Проверка успешного статус-кода'
     )
-    
-
-
-    
-

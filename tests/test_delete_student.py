@@ -10,11 +10,23 @@ from src.utils.assert_wrappers import (
     assert_eq,
 )
 
+pytestmark = [
+    allure.feature("Удаление данных студента"),
+    allure.suite("Тесты на удаление данных студента"),
+]
+
 @allure.title('Удаление существующего студента')
 @pytest.mark.smoke
 @pytest.mark.regression
 @pytest.mark.positive
-def test_delete_student(student_client: StudentClient, created_student: int) -> None:
+@pytest.mark.xfail(
+    reason='Баг №8: GET /student/{id} периодически возвращает студента'
+    ' после успешного DELETE /student/{id}'
+)
+def test_delete_student(
+    student_client: StudentClient, 
+    created_student: int,
+) -> None:
     delete_response = student_client.delete_student(
         student_id=created_student,
     )

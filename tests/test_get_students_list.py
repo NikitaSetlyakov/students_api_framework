@@ -8,6 +8,11 @@ from src.utils.assert_wrappers import (
     assert_status_code,
 )
 
+pytestmark = [
+    allure.feature("Получение данных студента"),
+    allure.suite("Тесты на получение данных студента"),
+]
+
 @allure.title('Получение списка студентов')
 @pytest.mark.smoke
 @pytest.mark.regression

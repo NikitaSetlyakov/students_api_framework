@@ -13,6 +13,11 @@ from src.utils.builders.student_builder import StudentBuilder
 from src.utils.helpers.student_assertions import assert_student_fields
 from src.clients.students_client import StudentClient
 
+pytestmark = [
+    allure.feature("Создание данных о студенте"),
+    allure.suite("Тесты на создание данных о студенте"),
+]
+
 @allure.title('Создание студента с валидными данными')
 @pytest.mark.smoke
 @pytest.mark.regression
