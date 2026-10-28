@@ -2,8 +2,8 @@ import allure
 import pytest
 
 from src.clients.students_client import StudentClient
-from src.utils.helpers.create_student_helper import assert_student_fields
-from src.utils.helpers.delete_student_helper import assert_student_not_found
+from students_api_framework.src.utils.helpers.student_assertions import assert_student_fields
+from src.utils.helpers.student_assertions import assert_student_not_found
 from src.utils.assert_wrappers import (
     assert_is_instance, 
     assert_contains, 
@@ -58,7 +58,7 @@ def test_get_student_by_id(
         student=student,
         expected_data=student_data,
     )
-    
+
 @allure.title('Получение студента по ID после удаления')
 @pytest.mark.negative
 @pytest.mark.xfail(

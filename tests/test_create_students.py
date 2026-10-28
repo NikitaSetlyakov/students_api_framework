@@ -10,7 +10,7 @@ from src.utils.assert_wrappers import (
     assert_status_code,
 )
 from src.utils.builders.student_builder import StudentBuilder
-from src.utils.helpers.create_student_helper import assert_student_fields
+from students_api_framework.src.utils.helpers.student_assertions import assert_student_fields
 from src.clients.students_client import StudentClient
 
 @allure.title('Создание студента с валидными данными')

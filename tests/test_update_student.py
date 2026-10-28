@@ -2,6 +2,7 @@ import allure
 import pytest
 
 from src.clients.students_client import StudentClient
+from students_api_framework.src.utils.helpers.student_assertions import assert_student_fields
 from src.utils.assert_wrappers import (
     assert_contains,
     assert_is_instance,
@@ -58,30 +59,10 @@ def test_update_student(
         allure_step='Проверка сохранения ID студента',
     )
 
-    assert_eq(
-        actual_value=student['name'],
-        expected_value=updated_student_data['name'],
-        allure_step='Проверка обновлённого имени студента',
+    assert_student_fields(
+        student=student,
+        expected_data=updated_student_data,
     )
-
-    assert_eq(
-        actual_value=student['email'],
-        expected_value=updated_student_data['email'],
-        allure_step='Проверка обновлённого email студента',
-    )
-
-    assert_eq(
-        actual_value=student['gender'],
-        expected_value=updated_student_data['gender'],
-        allure_step='Проверка обновлённого gender студента',
-    )
-
-    assert_eq(
-        actual_value=student['status'],
-        expected_value=updated_student_data['status'],
-        allure_step='Проверка обновлённого status студента',
-    )
-
 
 @allure.title('Обновление несуществующего студента')
 @pytest.mark.negative

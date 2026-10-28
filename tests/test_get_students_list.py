@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from src.clients.students_client import StudentClient
 from src.utils.assert_wrappers import (
@@ -8,6 +9,7 @@ from src.utils.assert_wrappers import (
 )
 
 @allure.title('Получение списка студентов')
+@pytest.mark.positive
 def test_get_students_list(student_client: StudentClient) -> None:
     response = student_client.get_students_list()
 

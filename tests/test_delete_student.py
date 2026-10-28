@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from src.clients.students_client import StudentClient
-from src.utils.helpers.delete_student_helper import assert_student_not_found
+from src.utils.helpers.student_assertions import assert_student_not_found
 from src.utils.assert_wrappers import (
     assert_is_instance,
     assert_contains,
