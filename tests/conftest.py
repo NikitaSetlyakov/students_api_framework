@@ -31,6 +31,15 @@ def student_data(fake: Faker) -> dict:
     )
 
 @pytest.fixture
+def updated_student_data(fake: Faker) -> dict:
+    return StudentBuilder.update_student(
+        email=fake.email(),
+        gender='female',
+        name=f'{fake.first_name()} {fake.last_name()}',
+        status=0,
+    )
+
+@pytest.fixture
 def created_student(
     student_client: StudentClient, 
     student_data: dict,
@@ -59,24 +68,6 @@ def created_student(
         expected_value=200,
         allure_step='Проверка успешного статус-кода'
     )
-
-# @pytest.fixture
-# def created_student_for_delete(
-#     student_client: StudentClient, 
-#     student_data: dict,
-# ) -> None:
-    
-#     create_student = student_client.create_new_student(
-#         body=student_data
-#     )
-
-#     assert_status_code(
-#         actual_value=create_student.status_code,
-#         expected_value=200,
-#         allure_step='Проверка успешного статус-кода'
-#     )
-
-#     return create_student.json()['student']['id']
     
 
 
