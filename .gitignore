@@ -12,6 +12,8 @@ allure-results/
 allure-report/
 .env
 *.env
+.env.*
+!.env.example
 .vscode/
 .idea/
 *.log

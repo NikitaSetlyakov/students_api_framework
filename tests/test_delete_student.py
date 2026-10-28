@@ -11,6 +11,8 @@ from src.utils.assert_wrappers import (
 )
 
 @allure.title('Удаление существующего студента')
+@pytest.mark.smoke
+@pytest.mark.regression
 @pytest.mark.positive
 def test_delete_student(student_client: StudentClient, created_student: int) -> None:
     delete_response = student_client.delete_student(
@@ -54,16 +56,17 @@ def test_delete_student(student_client: StudentClient, created_student: int) -> 
     )
 
     get_data = get_response.json()
-
     assert_student_not_found(get_data)
 
-@allure.title('Удаление несуществующего студента')
+@allure.title('Повторное удаление уже удалённого студента')
+@pytest.mark.regression
 @pytest.mark.negative
 @pytest.mark.xfail(
     reason='Баг №4: DELETE /student/{student_id} возвращает сообщение ' 
-    'об успешном удалении для уже удалённого студента'
+    'об успешном удалении для уже удалённого студента',
+    strict=True,
 )
-def test_delete_nonexistent_student(
+def test_delete_already_deleted_student(
     student_client: StudentClient,
     created_student: int,
 ) -> None:
@@ -94,7 +97,6 @@ def test_delete_nonexistent_student(
     )
 
     data = response.json()
-
     assert_is_instance(data, dict)
 
     assert_student_not_found(data)

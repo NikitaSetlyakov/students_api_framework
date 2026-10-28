@@ -10,10 +10,12 @@ from src.utils.assert_wrappers import (
     assert_status_code,
 )
 from src.utils.builders.student_builder import StudentBuilder
-from students_api_framework.src.utils.helpers.student_assertions import assert_student_fields
+from src.utils.helpers.student_assertions import assert_student_fields
 from src.clients.students_client import StudentClient
 
 @allure.title('Создание студента с валидными данными')
+@pytest.mark.smoke
+@pytest.mark.regression
 @pytest.mark.positive
 def test_create_valid_student(
     student_client: StudentClient, 
@@ -75,8 +77,11 @@ def test_create_valid_student(
     ],
 )
 @pytest.mark.negative
+@pytest.mark.regression
 @pytest.mark.xfail(
-    reason='Баг #1: POST /student возвращает HTTP 200 при gender="" и status=null'
+    reason='Баг #1: POST /student возвращает HTTP 200 ' 
+    'при gender="" и status=null',
+    strict=True,
 )
 def test_create_student_with_invalid_data(
     student_client: StudentClient,
@@ -114,8 +119,11 @@ def test_create_student_with_invalid_data(
     ],
 )
 @pytest.mark.negative
+@pytest.mark.regression
 @pytest.mark.xfail(
-    reason='Баг #2: POST /student возвращает 200 вместо 400 без обязательного поля',
+    reason='Баг #2: POST /student возвращает 200 ' 
+    'вместо 400 без обязательного поля',
+    strict=True,
 )
 def test_create_student_without_required_field(
     student_client: StudentClient,
@@ -133,4 +141,3 @@ def test_create_student_without_required_field(
         expected_value=400,
         allure_step='Проверка ошибочного статус-кода',
     )
-

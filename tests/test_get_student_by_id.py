@@ -2,8 +2,10 @@ import allure
 import pytest
 
 from src.clients.students_client import StudentClient
-from students_api_framework.src.utils.helpers.student_assertions import assert_student_fields
-from src.utils.helpers.student_assertions import assert_student_not_found
+from src.utils.helpers.student_assertions import (
+    assert_student_not_found,
+    assert_student_fields
+)
 from src.utils.assert_wrappers import (
     assert_is_instance, 
     assert_contains, 
@@ -12,15 +14,15 @@ from src.utils.assert_wrappers import (
 )
 
 @allure.title('Проверка получения студента по ID')
+@pytest.mark.smoke
+@pytest.mark.regression
 @pytest.mark.positive
 def test_get_student_by_id(
     student_client: StudentClient,
     created_student: int,
     student_data: dict,
 ) -> None:
-    student_id = created_student
-
-    response = student_client.get_student_by_id(student_id=student_id)
+    response = student_client.get_student_by_id(student_id=created_student)
 
     assert_status_code(
         actual_value=response.status_code,
@@ -50,7 +52,7 @@ def test_get_student_by_id(
 
     assert_eq(
         actual_value=student['id'],
-        expected_value=student_id,
+        expected_value=created_student,
         allure_step='Проверка ID полученного студента',
     )
 
@@ -60,10 +62,12 @@ def test_get_student_by_id(
     )
 
 @allure.title('Получение студента по ID после удаления')
+@pytest.mark.regression
 @pytest.mark.negative
 @pytest.mark.xfail(
     reason='Баг #3: Получение удалённого студента' 
-    ' по ID возвращает HTTP 200 OK.'
+    ' по ID возвращает HTTP 200 OK.',
+    strict=True,
 )
 def test_get_deleted_student_by_id(
     student_client: StudentClient,

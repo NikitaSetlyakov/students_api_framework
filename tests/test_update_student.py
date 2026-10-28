@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from src.clients.students_client import StudentClient
-from students_api_framework.src.utils.helpers.student_assertions import assert_student_fields
+from src.utils.helpers.student_assertions import assert_student_fields
 from src.utils.assert_wrappers import (
     assert_contains,
     assert_is_instance,
@@ -11,10 +11,13 @@ from src.utils.assert_wrappers import (
 )
 
 @allure.title('Обновление существующего студента')
+@pytest.mark.smoke
+@pytest.mark.regression
 @pytest.mark.positive
 @pytest.mark.xfail(
     reason='Баг #5: PUT /student/{student_id} возвращает поле '
-    'student.status строкой вместо числа.'
+    'student.status строкой вместо числа.',
+    strict=True,
 )
 def test_update_student(
     student_client: StudentClient,
@@ -65,10 +68,12 @@ def test_update_student(
     )
 
 @allure.title('Обновление несуществующего студента')
+@pytest.mark.regression
 @pytest.mark.negative
 @pytest.mark.xfail(
     reason='Баг #6: PUT /student/{student_id} возвращает HTTP 200 ' 
-    'при обновлении несуществующего студента.'
+    'при обновлении несуществующего студента.',
+    strict=True,
 )
 def test_update_nonexistent_student(
     student_client: StudentClient,
